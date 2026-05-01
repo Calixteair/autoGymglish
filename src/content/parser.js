@@ -28,7 +28,7 @@
   // ----- Helpers DOM ------------------------------------------------------
 
   // Patterns de noms d'inputs Gymglish "exo" (pas les inputs internes type STOPMODULE/VERSION/IDONTKNOW).
-  var EXO_INPUT_NAME_REGEX = /^(radioqcm|QCMC|BRAF|BRAM)\d+$/;
+  var EXO_INPUT_NAME_REGEX = /^(radioqcm|QCMC|BRAF|BRAM|BRAB)\d+$/;
 
   /**
    * True si le bloc est en review (corrigé read-only).
@@ -141,28 +141,39 @@
     var checkboxes = block.querySelectorAll('input[type="checkbox"][name^="QCMC"]');
     var selects = block.querySelectorAll('select[name^="BRAF"]');
     var texts = block.querySelectorAll('input[type="text"][name^="BRAM"]');
+    var dictations = block.querySelectorAll('input[type="text"][name^="BRAB"]');
 
     var types = [];
     if (radios.length) types.push('radio-single');
     if (checkboxes.length) types.push('checkbox-multiple');
     if (selects.length) types.push('dropdown');
     if (texts.length) types.push('text-conjugation');
+    // BRAB prime sur la conjugaison : si présent, c'est un exo de dictée audio.
+    if (dictations.length) types.push('text-dictation');
 
     return {
       types: types,
-      inputs: { radios: radios, checkboxes: checkboxes, selects: selects, texts: texts }
+      inputs: {
+        radios: radios, checkboxes: checkboxes, selects: selects,
+        texts: texts, dictations: dictations
+      }
     };
   }
 
   // ----- Détection audio --------------------------------------------------
 
   /**
-   * Repère un exo qui dépend vraiment de l'audio (dictée, écoute).
-   * Heuristique : titre/placeholder explicite, ou input texte sans énoncé écrit
-   * avec un <audio> non-décoratif.
+   * Repère un exo audio non supporté (à skipper).
+   * Les blocs text-dictation (BRAB...) sont gérés explicitement et ne tombent pas
+   * dans cette branche : on ne skip que les autres formes d'audio (énoncé vide
+   * sans inputs textuels exploitables par le LLM).
    */
   function isAudioExercise(block, statementText) {
     try {
+      // Si le bloc contient des inputs BRAB, on supporte (text-dictation).
+      if (block.querySelector && block.querySelector('input[type="text"][name^="BRAB"]')) {
+        return false;
+      }
       // Indice fort : un input dont le hint mentionne l'audio.
       var hintInputs = block.querySelectorAll('input[placeholder], input[title]');
       for (var i = 0; i < hintInputs.length; i++) {
@@ -187,6 +198,25 @@
     return false;
   }
 
+  /**
+   * Cherche l'URL audio principale d'un bloc (élément <audio> ou <source>),
+   * en évitant les players de prononciation décoratifs.
+   */
+  function extractAudioUrl(block) {
+    try {
+      var audios = block.querySelectorAll('audio');
+      for (var i = 0; i < audios.length; i++) {
+        var a = audios[i];
+        if (a.closest('.pronunciation-players')) continue;
+        var direct = a.getAttribute('src');
+        if (direct) return direct;
+        var source = a.querySelector('source[src]');
+        if (source) return source.getAttribute('src');
+      }
+    } catch (_) {}
+    return null;
+  }
+
   // ----- Énoncé propre ----------------------------------------------------
 
   /**
@@ -197,7 +227,7 @@
     var clone = block.cloneNode(true);
 
     // Retirer les éléments parasites
-    var toRemove = clone.querySelectorAll('script, audio, video, button, .pronunciation-players, .a9-btn-selfrequest-container, .video-container');
+    var toRemove = clone.querySelectorAll('script, audio, video, button, .pronunciation-players, .a9-btn-selfrequest-container, .video-container, .mejs__container, .mejs__inner, .mejs__layers, .mejs__controls, .mejs__captions-button, .mejs__speed-button, .mejs__volume-button, .mejs__playpause-button, .mejs__time-rail, .mejs__captions-selector, .mejs__speed-selector, .mejs__offscreen, .mejs__time-float, [class*="mejs__"]');
     for (var i = 0; i < toRemove.length; i++) {
       toRemove[i].parentNode && toRemove[i].parentNode.removeChild(toRemove[i]);
     }
@@ -317,6 +347,15 @@
     return blanks;
   }
 
+  /** Pour chaque input dictée (BRAB), renvoie juste { id } (pas de hint). */
+  function extractDictationBlanks(inputs) {
+    var blanks = [];
+    for (var i = 0; i < inputs.length; i++) {
+      blanks.push({ id: inputs[i].getAttribute('name') });
+    }
+    return blanks;
+  }
+
   /**
    * Détecte une banque de mots dans un texte de la forme "mot | mot | mot".
    * Retourne un tableau de mots trim, ou null si rien trouvé.
@@ -354,6 +393,19 @@
           debug: (block.outerHTML || '').slice(0, 500)
         }
       };
+    }
+
+    // Cas dictée : BRAB prend toujours la priorité, même si d'autres types coexistent (rare).
+    if (inputs.dictations && inputs.dictations.length) {
+      var dictExercise = {
+        id: tstId,
+        type: 'text-dictation',
+        statement: statement,
+        domSelector: domSelector,
+        blanks: extractDictationBlanks(inputs.dictations),
+        audioUrl: extractAudioUrl(block)
+      };
+      return { exercise: dictExercise };
     }
 
     if (types.length > 1) {
@@ -507,6 +559,8 @@
       extractChoices: extractChoices,
       extractDropdowns: extractDropdowns,
       extractTextBlanks: extractTextBlanks,
+      extractDictationBlanks: extractDictationBlanks,
+      extractAudioUrl: extractAudioUrl,
       extractContext: extractContext,
       isAudioExercise: isAudioExercise,
       isReviewOnly: isReviewOnly,

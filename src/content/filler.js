@@ -275,6 +275,10 @@
     if (exercise.type === 'text-conjugation') {
       return sabotageText(exercise, answer, idkPath);
     }
+    if (exercise.type === 'text-dictation') {
+      // Pas de bouton "I don't know" pour la dictée → on force la voie typo.
+      return sabotageText(exercise, answer, false);
+    }
     return null;
   }
 
@@ -389,7 +393,7 @@
       }
       return allOk;
     }
-    if (exercise.type === 'text-conjugation') {
+    if (exercise.type === 'text-conjugation' || exercise.type === 'text-dictation') {
       var bl = finalAnswer.blanks || {};
       var blanks = exercise.blanks || [];
       var allTxtOk = true;
@@ -469,7 +473,9 @@
 
     var exercises = Array.isArray(parserOutput.exercises) ? parserOutput.exercises : [];
     var sabotagedSet = decideSabotage(exercises, settings.targetAccuracy != null ? settings.targetAccuracy : 100);
-    var audioSkipped = (parserOutput.skipped || []).filter(function (s) { return s && s.reason === 'audio'; }).length;
+    var audioSkipped = (parserOutput.skipped || []).filter(function (s) {
+      return s && typeof s.reason === 'string' && s.reason.indexOf('audio') === 0;
+    }).length;
     var idx = indexAnswers(answersList);
 
     return runLoop({

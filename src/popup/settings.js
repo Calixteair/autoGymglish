@@ -122,6 +122,24 @@ function applySettingsToForm(settings) {
   const oll = settings.ollama || {};
   els.ollamaUrl.value = oll.baseUrl || (providerInfo.ollama?.defaultBaseUrl || "");
   selectModel(els.ollamaModel, els.ollamaModelCustom, oll.model || (providerInfo.ollama?.defaultModel || ""), ollSugg);
+
+  refreshAudioHint();
+}
+
+function refreshAudioHint() {
+  const hasGeminiKey = !!(els.geminiKey.value.trim());
+  const hints = document.querySelectorAll("[data-audio-hint]");
+  hints.forEach((h) => {
+    const status = h.querySelector("[data-audio-status]");
+    if (!status) return;
+    if (hasGeminiKey) {
+      status.textContent = "enabled (Gemini key detected)";
+      status.style.color = "var(--ok, #2d6a4f)";
+    } else {
+      status.textContent = "disabled (configure a Gemini key above)";
+      status.style.color = "var(--ink-soft, #7a7a76)";
+    }
+  });
 }
 
 function fillOllamaModelSelect(suggestedModels, installedModels) {
@@ -238,5 +256,6 @@ async function handleOllamaRefresh() {
 els.save.addEventListener("click", handleSave);
 els.ollamaRefresh.addEventListener("click", handleOllamaRefresh);
 els.activeProvider.addEventListener("change", () => refreshActiveCard(els.activeProvider.value));
+els.geminiKey.addEventListener("input", refreshAudioHint);
 
 init();

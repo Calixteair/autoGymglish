@@ -25,6 +25,7 @@
     '- "checkbox-multiple": choose ALL the correct ids from "choices" (one or more). Never pick a "Je ne sais pas" / "I don\'t know" option. Put the ids in "selected".',
     '- "dropdown": for each entry in "dropdowns", choose ONE option id from its "options". Return a "dropdowns" object mapping each dropdown.id to the chosen option id.',
     '- "text-conjugation": for each entry in "blanks", give the exact word or conjugated form to type. Use the "verb" / "hint" field if provided. If the exercise has a "wordBank" array, you MUST only use words from it (a word may be reused if the exercise allows). Return a "blanks" object mapping each blank.id to the chosen string.',
+    '- "text-dictation": same as text-conjugation but the words come from an audio recording attached to the request. Listen to the audio and return a "blanks" object mapping each blank.id to the exact word(s) heard at that position. The blanks appear in the order they should be filled.',
     '',
     'Hard constraints:',
     '- Answer ONLY with valid JSON matching the provided response schema. No markdown, no code fences, no prose, no comments.',
@@ -41,19 +42,29 @@
     var ctx = payload.context || '(no dialogue context)';
     var exercises = Array.isArray(payload.exercises) ? payload.exercises : [];
     var serialized = JSON.stringify({ exercises: exercises }, null, 2);
-    return [
+    var hasDictation = exercises.some(function (e) { return e && e.type === 'text-dictation'; });
+    var lines = [
       'Language: ' + lang,
       '',
       'Context (dialogue from the lesson):',
       '"""',
       ctx,
       '"""',
-      '',
+      ''
+    ];
+    if (hasDictation) {
+      lines.push(
+        'Audio attachments are provided in the same order as the text-dictation exercises listed below. Audio #1 corresponds to the first text-dictation exercise, etc.',
+        ''
+      );
+    }
+    lines.push(
       'Solve the following exercises. Respond with a single JSON object matching the response schema.',
       '',
       'Exercises:',
       serialized
-    ].join('\n');
+    );
+    return lines.join('\n');
   }
 
   // ----- JSON Schema strict ----------------------------------------------
@@ -203,7 +214,8 @@
     'radio-single': validateRadioSingle,
     'checkbox-multiple': validateCheckboxMultiple,
     'dropdown': validateDropdown,
-    'text-conjugation': validateTextConjugation
+    'text-conjugation': validateTextConjugation,
+    'text-dictation': validateTextConjugation
   };
 
   function validateAnswers(answers, payload) {

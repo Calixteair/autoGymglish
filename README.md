@@ -14,12 +14,12 @@ Compatible avec tous les produits A9 (même structure DOM) :
 
 ## Fonctionnalités
 
-- 4 types d'exercices supportés : QCM (radio + checkbox), trous à choix limité (dropdowns), trous libres (conjugaison)
+- 5 types d'exercices supportés : QCM (radio + checkbox), trous à choix limité (dropdowns), trous libres (conjugaison), **dictées audio**
 - 3 providers LLM au choix : **Google Gemini**, **Anthropic Claude**, **Ollama** (local)
+- **Audio fallback automatique** : si une clé Gemini est configurée, les dictées audio sont routées vers Gemini même si le provider actif est Claude ou Ollama (qui ne supportent pas l'audio)
 - **Slider "target accuracy"** 0–100 % — l'extension sabote volontairement N % des réponses pour simuler des erreurs réalistes (typo, mauvais mot du wordBank, choix alternatif, ou case "Je ne sais pas")
 - Délais randomisés 0,5–2 s entre chaque remplissage, avec bouton **Skip wait**
 - Bouton **Stop** pour interrompre proprement
-- Skip silencieux des exercices audio / dictée avec compteur
 - UI dark mode auto
 
 ## Installation (mode développeur)
@@ -42,6 +42,8 @@ Pour mettre à jour : `git pull` puis recharger l'extension via la flèche circu
 2. Choisir le provider actif (Gemini / Claude / Ollama).
 3. Renseigner la clé API ou l'URL Ollama.
 4. **Save settings**.
+
+> 💡 **Astuce dictées audio** : Claude et Ollama ne gèrent pas l'audio. Si tu utilises l'un des deux comme provider principal, configure aussi une clé Gemini — les dictées audio seront routées vers Gemini automatiquement. Le statut s'affiche dans Settings sur les cartes Claude / Ollama.
 
 ### Obtenir une clé API
 

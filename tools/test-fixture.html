@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>autoGymglish · Test Fixture · Verb Forms</title>
+  <style>
+    body { font-family: Georgia, serif; max-width: 720px; margin: 40px auto; padding: 0 20px; color: #222; line-height: 1.6; }
+    section { background: #fff7f7; border-radius: 12px; padding: 24px 32px; margin-bottom: 24px; }
+    .section-story { background: #f7f9ff; }
+    .a9l-box { border: 1px solid #eee; border-radius: 8px; padding: 16px; margin: 12px 0; background: #fff; }
+    .section-title { font-weight: 700; font-size: 18px; margin-bottom: 12px; color: #333; }
+    select { padding: 4px 8px; border: 1px solid #aaa; border-radius: 4px; font-family: inherit; font-size: 15px; margin: 0 2px; }
+    input[type="text"] { padding: 4px 8px; border: 1px solid #aaa; border-radius: 4px; font-family: inherit; font-size: 15px; }
+    label { display: block; padding: 4px 0; }
+    .idontknow { margin-top: 16px; padding-top: 12px; border-top: 1px dashed #ccc; font-size: 13px; color: #666; }
+    h1 { font-size: 24px; }
+    h2 { font-size: 20px; color: #c8312b; margin-top: 32px; }
+    .meta { font-size: 12px; color: #888; }
+  </style>
+</head>
+<body>
+
+<h1>autoGymglish — Test Fixture</h1>
+<p class="meta">Reproduit la structure DOM exacte d'une leçon Gymglish. Charge cette page comme <strong>http://localhost</strong> ou <strong>file://</strong> ne marchera pas (content_scripts limités aux domaines A9). Pour tester : <strong>servir cette page sur un domaine Gymglish</strong> via override DNS, ou <strong>désactiver le filtre de matches dans manifest.json</strong> en ajoutant <code>"&lt;all_urls&gt;"</code> temporairement.</p>
+
+<!-- ============== SECTION STORY (contexte dialogue) ============== -->
+<section class="section-story">
+  <div class="page">
+    <div class="a9l-story-container">
+      <div class="section-title section-title-story">Rice Farming in Indonesia</div>
+      <div class="a9l-box-story">
+        <div class="story-text">
+          <p><strong>Reporter</strong>: Today, we are reporting from the rice fields of Indonesia, one of the largest rice producers in the world.</p>
+          <p><strong>Farmer</strong>: Rice has been a part of our culture for centuries. Today, millions of farmers grow rice across the archipelago.</p>
+          <p><strong>Reporter</strong>: Thanks to the tropical climate, rice can be planted throughout the entire year. Even right now, fields are actively producing rice.</p>
+          <p><strong>Government Official</strong>: While rice remains essential, the government wants to diversify our agricultural output. New crops are being developed by our scientists to improve productivity.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== SECTION TEST (les exos actifs) ============== -->
+<section class="section-test">
+  <div class="page">
+    <div class="section-title section-title-test">Almost there!</div>
+    <div class="a9l-boxes-container a9-boxes-container-extra-tests">
+      <div class="a9l-boxes">
+
+        <!-- ========== EXO 1 : DROPDOWN (le bug rapporté) ========== -->
+        <div class="a9l-box a9l-box-test a9l-box-test-lesson">
+          <!-- TST900001 -->
+          <div class="a9l-box-content"
+               data-guapo-translation-qs="xml-id=TST900001&lang=fr"
+               data-guapo-xml-qs="xml-id=TST900001"
+               data-staff-relative-url="test/900001">
+            <div class="title-inside-box"><strong></strong></div>
+            Choose the correct form of the verb in the sentences below.<br><br>
+
+            Today in Indonesia rice
+            <select name="BRAF900001" size="1">
+              <option value="NOTDONE">--------</option>
+              <option value="BRAC900001">was grown</option>
+              <option value="BRAC900002">is grown</option>
+              <option value="BRAC900003" class="dontknowchoice">- I don't know -</option>
+            </select>
+            by millions of farmers.<br><br>
+
+            Because of the climate, the rice can
+            <select name="BRAF900002" size="1">
+              <option value="NOTDONE">--------</option>
+              <option value="BRAC900004">being planted</option>
+              <option value="BRAC900005">be planted</option>
+              <option value="BRAC900006" class="dontknowchoice">- I don't know -</option>
+            </select>
+            all year long.<br><br>
+
+            Even at this very moment rice
+            <select name="BRAF900003" size="1">
+              <option value="NOTDONE">--------</option>
+              <option value="BRAC900007">produces</option>
+              <option value="BRAC900008">is being produced</option>
+              <option value="BRAC900009" class="dontknowchoice">- I don't know -</option>
+            </select>.<br><br>
+
+            Today the government
+            <select name="BRAF900004" size="1">
+              <option value="NOTDONE">--------</option>
+              <option value="BRAC900010">was wanting</option>
+              <option value="BRAC900011">wants</option>
+              <option value="BRAC900012" class="dontknowchoice">- I don't know -</option>
+            </select>
+            to diversify the output of agricultural products.<br><br>
+
+            Even as you read this, crops which will increase the productivity of farmers
+            <select name="BRAF900005" size="1">
+              <option value="NOTDONE">--------</option>
+              <option value="BRAC900013">were developed</option>
+              <option value="BRAC900014">are being developed</option>
+              <option value="BRAC900015" class="dontknowchoice">- I don't know -</option>
+            </select>
+            by scientists.
+
+            <div class="clear">&nbsp;</div>
+          </div>
+        </div>
+
+        <!-- ========== EXO 2 : RADIO-SINGLE ========== -->
+        <div class="a9l-box a9l-box-test a9l-box-test-lesson">
+          <!-- TST900002 -->
+          <div class="a9l-box-content"
+               data-guapo-translation-qs="xml-id=TST900002&lang=fr"
+               data-guapo-xml-qs="xml-id=TST900002"
+               data-staff-relative-url="test/900002">
+            <div class="title-inside-box"><strong></strong></div>
+            Choose the correct sentence:<br><br>
+            <label><input type="radio" name="radioqcm900002" id="radioqcm900002-0" value="QCMC900020"> Rice are grown by farmers.</label>
+            <label><input type="radio" name="radioqcm900002" id="radioqcm900002-1" value="QCMC900021"> Rice is grown by farmers.</label>
+            <label><input type="radio" name="radioqcm900002" id="radioqcm900002-2" value="QCMC900022"> Rice grow by farmers.</label>
+            <label><input type="radio" name="radioqcm900002" id="radioqcm900002-3" value="QCMC900023" class="dontknowchoice"> - I don't know -</label>
+          </div>
+        </div>
+
+        <!-- ========== EXO 3 : CHECKBOX-MULTIPLE ========== -->
+        <div class="a9l-box a9l-box-test a9l-box-test-lesson">
+          <!-- TST900003 -->
+          <div class="a9l-box-content"
+               data-guapo-translation-qs="xml-id=TST900003&lang=fr"
+               data-guapo-xml-qs="xml-id=TST900003"
+               data-staff-relative-url="test/900003">
+            <div class="title-inside-box"><strong></strong></div>
+            Choose all the TRUE statements about the dialogue:<br><br>
+            <label><input type="checkbox" name="QCMC900030" value="checked"> Indonesia produces rice.</label>
+            <label><input type="checkbox" name="QCMC900031" value="checked"> The climate allows year-round planting.</label>
+            <label><input type="checkbox" name="QCMC900032" value="checked"> Indonesia plans to stop producing rice entirely.</label>
+            <label><input type="checkbox" name="QCMC900033" value="checked"> Scientists are developing new crops.</label>
+            <div class="idontknow idontknow-mod clearfix">
+              <div>
+                <input type="checkbox" name="IDONTKNOW900003" id="IDONTKNOW900003" value="checked">
+                <label for="IDONTKNOW900003"><span class="dontknowchoice">I don't know</span></label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========== EXO 4 : TEXT-CONJUGATION (avec wordBank) ========== -->
+        <div class="a9l-box a9l-box-test a9l-box-test-lesson">
+          <!-- TST900004 -->
+          <div class="a9l-box-content"
+               data-guapo-translation-qs="xml-id=TST900004&lang=fr"
+               data-guapo-xml-qs="xml-id=TST900004"
+               data-staff-relative-url="test/900004">
+            <div class="title-inside-box"><strong></strong></div>
+            Use the following words to fill in the blanks. Words may be used more than once:<br><br>
+            <strong>since</strong> | <strong>for</strong> | <strong>ago</strong><br><br>
+            Indonesia has been growing rice
+            <input type="text" name="BRAM900040" autocomplete="off" maxlength="70" placeholder=" " size="6">
+            centuries.<br><br>
+
+            The first rice crops appeared more than 4000 years
+            <input type="text" name="BRAM900041" autocomplete="off" maxlength="70" placeholder=" " size="4">.<br><br>
+
+            Production has tripled
+            <input type="text" name="BRAM900042" autocomplete="off" maxlength="70" placeholder=" " size="6">
+            the 1960s.<br><br>
+
+            <div class="idontknow idontknow-mod clearfix">
+              <div>
+                <input type="checkbox" name="IDONTKNOW900004" id="IDONTKNOW900004" value="checked">
+                <label for="IDONTKNOW900004"><span class="dontknowchoice">I don't know</span></label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========== EXO 5 : TEXT-CONJUGATION (verbe à conjuguer, pas de bank) ========== -->
+        <div class="a9l-box a9l-box-test a9l-box-test-lesson">
+          <!-- TST900005 -->
+          <div class="a9l-box-content"
+               data-guapo-translation-qs="xml-id=TST900005&lang=fr"
+               data-guapo-xml-qs="xml-id=TST900005"
+               data-staff-relative-url="test/900005">
+            <div class="title-inside-box"><strong></strong></div>
+            Conjugate the verbs correctly:<br><br>
+            Yesterday, the farmers
+            <input type="text" name="BRAM900050" autocomplete="off" maxlength="70" placeholder="to harvest" size="10">
+            the rice early in the morning.<br><br>
+
+            By next year, the new variety
+            <input type="text" name="BRAM900051" autocomplete="off" maxlength="70" placeholder="to be / available" size="14">
+            in supermarkets across Asia.<br><br>
+
+            <div class="idontknow idontknow-mod clearfix">
+              <div>
+                <input type="checkbox" name="IDONTKNOW900005" id="IDONTKNOW900005" value="checked">
+                <label for="IDONTKNOW900005"><span class="dontknowchoice">I don't know</span></label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========== EXO 6 : TEXT-DICTATION (audio dictée) ========== -->
+        <div class="a9l-box a9l-box-test a9l-box-test-lesson">
+          <!-- TST900006 -->
+          <div class="a9l-box-content"
+               data-guapo-translation-qs="xml-id=TST900006&lang=fr"
+               data-guapo-xml-qs="xml-id=TST900006"
+               data-staff-relative-url="test/900006">
+            <div class="title-inside-box"><strong></strong></div>
+            <div class="test-instruction">Listen to the audio, then fill in the blanks with the missing terms.</div>
+            <div class="row a9c-row-with-media row-a9-gy">
+              <div class="left-media col-lg-4 col-md-12 col-12">
+                <audio class="mediaelement lesson-audio audio-gg" preload="none"
+                       src="https://s3-studio-transcoded.freetls.fastly.net/audios/gymglish/DICTATION-PLACEMENT-7@edward-searched.mp3" controls>
+                  <source src="https://s3-studio-transcoded.freetls.fastly.net/audios/gymglish/DICTATION-PLACEMENT-7@edward-searched.mp3" type="audio/mpeg">
+                  <source src="https://s3-studio-transcoded.freetls.fastly.net/audios/gymglish/DICTATION-PLACEMENT-7@edward-searched.ogg" type="audio/ogg">
+                </audio>
+              </div>
+              <div class="left-right-media-content col-lg-8 col-md-12 col-12">
+                <strong>Security guard</strong>:
+                <input type="text" name="BRAB900060" autocomplete="off" maxlength="29" size="9" placeholder=" " writeonly="">
+                sir, I'm just going to do a quick
+                <input type="text" name="BRAB900061" autocomplete="off" maxlength="28" size="8" placeholder=" " writeonly="">.
+                Lift your arms, please... and
+                <input type="text" name="BRAB900062" autocomplete="off" maxlength="38" size="18" placeholder=" " writeonly="">
+                slightly.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== SECTION REVISION (corrigé read-only — DOIT être ignoré par le parser) ============== -->
+<section class="section-revision">
+  <div class="page">
+    <div class="section-title section-title-previously">Previously in your Learning Series</div>
+    <div class="a9l-box a9l-box-test-answered">
+      <!-- TST500000 — corrigé déjà fait, on doit l'ignorer -->
+      <div class="a9l-box-content" data-guapo-xml-qs="xml-id=TST500000">
+        Reminder of a previous mistake:<br>
+        <input type="radio" disabled checked> <span class="error">was producing</span>&nbsp;<span class="correct">produces</span><br>
+      </div>
+    </div>
+  </div>
+</section>
+
+<h2>Mode d'emploi</h2>
+<ol>
+  <li>Réponses correctes attendues :
+    <ul>
+      <li>Exo 1 : <code>is grown / be planted / is being produced / wants / are being developed</code></li>
+      <li>Exo 2 : <code>Rice is grown by farmers</code></li>
+      <li>Exo 3 : les 3 premières (Indonesia produces / year-round / Scientists)</li>
+      <li>Exo 4 : <code>for / ago / since</code></li>
+      <li>Exo 5 : <code>harvested / will be available</code></li>
+      <li>Exo 6 (dictée audio) : <code>Excuse me / search / turn around</code> — nécessite Gemini (via fallback automatique si autre provider actif)</li>
+    </ul>
+  </li>
+  <li>Pour utiliser cette page, charge-la via une URL Gymglish (impossible en local). Alternative simple : ajoute temporairement <code>"file:///*"</code> dans <code>manifest.json</code> sous <code>matches</code> et <code>host_permissions</code>, recharge l'extension, puis ouvre cette page en file://.</li>
+</ol>
+
+</body>
+</html>

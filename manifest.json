@@ -46,6 +46,7 @@
     "*://*.wunderbla.com/*",
     "*://*.hotelborbollon.com/*",
     "*://*.saga-italian.com/*",
+    "https://*.fastly.net/*",
     "http://localhost:11434/*"
   ]
 }

@@ -25,13 +25,24 @@
    * structuré dans response.content[0].input — plus robuste qu'un "respond with JSON"
    * en prompt, qui peut générer du texte parasite (markdown fences, prose).
    */
+  function modelSupportsTemperature(model) {
+    if (typeof model !== 'string') return true;
+    const m = model.toLowerCase();
+    if (m.includes('opus-4')) return false;
+    if (m.includes('sonnet-4-5') || m.includes('sonnet-4-6')) return false;
+    return true;
+  }
+
   function buildBody({ systemPrompt, userPrompt, schema, model, temperature }) {
     const body = {
       model,
       max_tokens: DEFAULT_MAX_TOKENS,
-      temperature: typeof temperature === 'number' ? temperature : 0.0,
       messages: [{ role: 'user', content: userPrompt }]
     };
+
+    if (modelSupportsTemperature(model)) {
+      body.temperature = typeof temperature === 'number' ? temperature : 0.0;
+    }
 
     if (systemPrompt && typeof systemPrompt === 'string') {
       body.system = systemPrompt;

@@ -133,12 +133,25 @@
 
   // ---------- Construction body ----------
 
-  function buildRequestBody({ systemPrompt, userPrompt, schema, temperature }) {
+  function buildRequestBody({ systemPrompt, userPrompt, schema, temperature, audioParts }) {
+    const parts = [];
+    const audio = Array.isArray(audioParts) ? audioParts : [];
+    for (const a of audio) {
+      if (!a || !a.base64) continue;
+      parts.push({
+        inline_data: {
+          mime_type: a.mimeType || 'audio/mp3',
+          data: a.base64,
+        },
+      });
+    }
+    parts.push({ text: String(userPrompt ?? '') });
+
     const body = {
       contents: [
         {
           role: 'user',
-          parts: [{ text: String(userPrompt ?? '') }],
+          parts,
         },
       ],
       generationConfig: {
@@ -206,7 +219,7 @@
 
   // ---------- Appel principal ----------
 
-  async function complete({ systemPrompt, userPrompt, schema, settings } = {}) {
+  async function complete({ systemPrompt, userPrompt, schema, settings, audioParts } = {}) {
     const cfg = settings || {};
     const apiKey = cfg.apiKey;
     const model = cfg.model || defaultModel;
@@ -222,9 +235,10 @@
     }
 
     const url = `${ENDPOINT_BASE}/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
-    const body = buildRequestBody({ systemPrompt, userPrompt, schema, temperature });
+    const body = buildRequestBody({ systemPrompt, userPrompt, schema, temperature, audioParts });
 
-    console.debug(`[autoGymglish/gemini] request to model ${model}`);
+    const audioCount = Array.isArray(audioParts) ? audioParts.length : 0;
+    console.debug(`[autoGymglish/gemini] request to model ${model}` + (audioCount > 0 ? ` with ${audioCount} audio part(s)` : ''));
 
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);

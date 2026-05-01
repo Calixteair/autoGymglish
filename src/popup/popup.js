@@ -358,7 +358,12 @@ async function runSolveStep() {
   const solveResp = await chrome.runtime.sendMessage({ type: "SOLVE", payload: parserOutput });
   if (!solveResp) throw new Error("Réponse vide du service worker.");
   if (solveResp.ok !== true) throw new Error(solveResp.error || "Erreur LLM inconnue");
-  return { parserOutput, answers: solveResp.result?.answers || [], result: solveResp.result || {} };
+  const result = solveResp.result || {};
+  const llmSkipped = Array.isArray(result.skipped) ? result.skipped : [];
+  if (llmSkipped.length > 0) {
+    parserOutput.skipped = (parserOutput.skipped || []).concat(llmSkipped);
+  }
+  return { parserOutput, answers: result.answers || [], result };
 }
 
 async function startFilling({ tabId, parserOutput, answers, targetAccuracy }) {
