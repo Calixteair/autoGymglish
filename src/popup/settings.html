@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>autoGymglish · Settings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+  <div class="risk-rail" aria-hidden="true"></div>
+
+  <main>
+    <header class="page-head">
+      <div class="brand-mark">
+        <span class="brand-tag">ext</span>
+        <h1>auto<em>Gymglish</em><span class="page-sub">/ settings</span></h1>
+      </div>
+      <p class="page-meta">Configuration · keys · models</p>
+    </header>
+
+    <section class="card card-active">
+      <div class="card-head">
+        <span class="card-num">00</span>
+        <span class="card-title">Active provider</span>
+      </div>
+      <p class="card-lead">Which LLM does <em>Solve &amp; Fill</em> use right now.</p>
+      <div class="row">
+        <select id="active-provider" class="select"></select>
+      </div>
+    </section>
+
+    <section class="card" data-provider="gemini">
+      <div class="card-head">
+        <span class="card-num">01</span>
+        <span class="card-title">Google Gemini</span>
+        <span class="card-tag" data-active-tag="gemini">active</span>
+      </div>
+      <label class="field">
+        <span class="field-label">API key</span>
+        <input type="password" id="gemini-key" class="input" placeholder="AIza...">
+      </label>
+      <div class="field">
+        <span class="field-label">Model</span>
+        <div class="model-row">
+          <select id="gemini-model" class="select"></select>
+          <input type="text" id="gemini-model-custom" class="input input-mono" placeholder="custom model id">
+        </div>
+      </div>
+      <p class="hint">→ Get a key on <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a></p>
+    </section>
+
+    <section class="card" data-provider="claude">
+      <div class="card-head">
+        <span class="card-num">02</span>
+        <span class="card-title">Anthropic Claude</span>
+        <span class="card-tag" data-active-tag="claude">active</span>
+      </div>
+      <label class="field">
+        <span class="field-label">API key</span>
+        <input type="password" id="claude-key" class="input" placeholder="sk-ant-...">
+      </label>
+      <div class="field">
+        <span class="field-label">Model</span>
+        <div class="model-row">
+          <select id="claude-model" class="select"></select>
+          <input type="text" id="claude-model-custom" class="input input-mono" placeholder="custom model id">
+        </div>
+      </div>
+      <p class="hint">→ Get a key on <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">console.anthropic.com</a></p>
+    </section>
+
+    <section class="card" data-provider="ollama">
+      <div class="card-head">
+        <span class="card-num">03</span>
+        <span class="card-title">Ollama · local</span>
+        <span class="card-tag" data-active-tag="ollama">active</span>
+      </div>
+      <label class="field">
+        <span class="field-label">Base URL</span>
+        <input type="text" id="ollama-url" class="input input-mono" placeholder="http://localhost:11434">
+      </label>
+      <div class="field">
+        <span class="field-label">Model</span>
+        <div class="model-row">
+          <select id="ollama-model" class="select"></select>
+          <input type="text" id="ollama-model-custom" class="input input-mono" placeholder="installed model">
+          <button type="button" id="ollama-refresh" class="btn btn-ghost">↻ Refresh</button>
+        </div>
+        <p id="ollama-status" class="status-msg"></p>
+      </div>
+      <p class="hint">→ <code>ollama serve</code> · <code>ollama pull qwen3:8b</code></p>
+    </section>
+
+    <div class="actions">
+      <button id="save" class="btn btn-primary">
+        <span>Save settings</span>
+        <span aria-hidden="true">→</span>
+      </button>
+      <span id="save-status"></span>
+    </div>
+
+    <footer class="page-foot">
+      <span class="foot-dot" aria-hidden="true">●</span>
+      <span>autoGymglish — Manual submit only</span>
+    </footer>
+  </main>
+  <script src="settings.js"></script>
+</body>
+</html>

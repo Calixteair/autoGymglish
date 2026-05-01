@@ -1,0 +1,51 @@
+{
+  "name": "autoGymglish",
+  "version": "0.1.0",
+  "description": "Auto-complète les exercices Gymglish via LLM (Gemini/Claude/Ollama)",
+  "manifest_version": 3,
+  "icons": {
+    "16": "icons/icon-16.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "action": {
+    "default_popup": "src/popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+  "background": {
+    "service_worker": "src/background/service-worker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.gymglish.com/*",
+        "*://*.frantastique.com/*",
+        "*://*.wunderbla.com/*",
+        "*://*.hotelborbollon.com/*",
+        "*://*.saga-italian.com/*"
+      ],
+      "js": [
+        "src/content/parser.js",
+        "src/content/filler.js",
+        "src/content/content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "*://*.gymglish.com/*",
+    "*://*.frantastique.com/*",
+    "*://*.wunderbla.com/*",
+    "*://*.hotelborbollon.com/*",
+    "*://*.saga-italian.com/*",
+    "http://localhost:11434/*"
+  ]
+}

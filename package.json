@@ -1,0 +1,15 @@
+{
+  "name": "autogymglish",
+  "version": "1.0.0",
+  "description": "Extension Chrome (Manifest V3) qui détecte les exercices Gymglish dans le DOM et les fait remplir par un LLM (Gemini, Claude ou Ollama). La soumission de la leçon reste manuelle.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jsdom": "^29.1.1"
+  }
+}
